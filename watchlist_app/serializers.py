@@ -39,4 +39,10 @@ class WatchListSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
         
     
-   
+
+class StreamPlatformSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = StreamPlatform
+        fields = '__all__'
+        read_only_fields = ['id']
