@@ -42,12 +42,18 @@ class WatchListDetailAV(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = "pk"
 
 
-class StreamPlatformAV(generics.ListCreateAPIView):
+
+class StreamPlatformAV(viewsets.ModelViewSet):
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
 
-class StreamPlatformDetailsAV(generics.RetrieveUpdateDestroyAPIView):    
-    queryset = StreamPlatform.objects.all()
-    serializer_class = StreamPlatformSerializer
-    lookup_field = "pk"
+
+# class StreamPlatformAV(generics.ListCreateAPIView):
+#     queryset = StreamPlatform.objects.all()
+#     serializer_class = StreamPlatformSerializer
+
+# class StreamPlatformDetailsAV(generics.RetrieveUpdateDestroyAPIView):    
+#     queryset = StreamPlatform.objects.all()
+#     serializer_class = StreamPlatformSerializer
+#     lookup_field = "pk"
 
