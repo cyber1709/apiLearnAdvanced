@@ -16,7 +16,7 @@ class StreamPlatformAdmin(admin.ModelAdmin):
 admin.site.register(StreamPlatform, StreamPlatformAdmin)
 
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('rating', 'description', 'watchlist', 'active', 'created', 'updated')
+    list_display = ('review_user', 'rating', 'description', 'watchlist', 'active', 'created', 'updated')
     list_filter = ['active', 'rating']
     search_fields = ['watchlist__title']
 
