@@ -3,7 +3,7 @@ from watchlist_app.models import WatchList, StreamPlatform, Review
 
 
 class WatchListAdmin(admin.ModelAdmin):
-    list_display = ('title', 'storyline', 'active', 'platform', 'created',)
+    list_display = ('title', 'storyline', 'active', 'platform', 'created', 'avg_rating', 'number_rating')
     search_fields = ['title']
     list_filter = ['active', 'created']
 
