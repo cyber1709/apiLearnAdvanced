@@ -5,13 +5,13 @@ from rest_framework.permissions import IsAuthenticated
 from watchlist_app.models import WatchList, StreamPlatform, Review
 from watchlist_app.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 from watchlist_app.permissions import AdminOrReadOnly, ReviewUserOrReadOnly
-from rest_framework.authentication import BasicAuthentication
+from rest_framework.authentication import TokenAuthentication
 
 
 
 class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -41,7 +41,7 @@ class ReviewCreate(generics.CreateAPIView):
 class ReviewList(generics.ListAPIView):
     serializer_class = ReviewSerializer
     
-    authentication_classes = [BasicAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
@@ -49,6 +49,10 @@ class ReviewList(generics.ListAPIView):
 
 
 class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
+    
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = [AdminOrReadOnly, ReviewUserOrReadOnly]
@@ -56,11 +60,17 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class WatchListAV(generics.ListCreateAPIView):
+    
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
 
 
 class WatchListDetailAV(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = WatchList.objects.all()
     
     serializer_class = WatchListSerializer
@@ -68,5 +78,9 @@ class WatchListDetailAV(generics.RetrieveUpdateDestroyAPIView):
 
 
 class StreamPlatformAV(viewsets.ModelViewSet):
+    
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
