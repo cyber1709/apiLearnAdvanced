@@ -19,11 +19,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if password != password2:
             raise serializers.ValidationError({'error' : 'passwords should be same!'})
         
-        # if User.objects.filter(email= self.validated_data['email']).exists():
-        #     raise serializers.ValidationError({'error' : 'Email is not unique!'})
+        if User.objects.filter(email= self.validated_data['email']).exists():
+             raise serializers.ValidationError({'error' : 'Email is not unique!'})
         
-        # if User.objects.filter(username= self.validated_data['username']).exists():
-        #     raise serializers.ValidationError({'error': 'username should be unique!'})    
+        if User.objects.filter(username= self.validated_data['username']).exists():
+             raise serializers.ValidationError({'error': 'username should be unique!'})    
         
         account = User(email=self.validated_data['email'],
                        username= self.validated_data['username']
