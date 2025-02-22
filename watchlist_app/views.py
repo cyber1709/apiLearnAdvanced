@@ -4,7 +4,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from watchlist_app.models import WatchList, StreamPlatform, Review
 from watchlist_app.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
-from watchlist_app.permissions import AdminOrReadOnly, ReviewUserOrReadOnly
+from watchlist_app.permissions import IsAdminOrReadOnly, ReviewUserOrReadOnly
 from rest_framework.authentication import TokenAuthentication
 
 
@@ -55,14 +55,14 @@ class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
     
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [AdminOrReadOnly, ReviewUserOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly, ReviewUserOrReadOnly]
     lookup_field = "pk"
 
 
 class WatchListAV(generics.ListCreateAPIView):
     
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
@@ -70,7 +70,7 @@ class WatchListAV(generics.ListCreateAPIView):
 
 class WatchListDetailAV(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrReadOnly]
     queryset = WatchList.objects.all()
     
     serializer_class = WatchListSerializer
@@ -80,7 +80,7 @@ class WatchListDetailAV(generics.RetrieveUpdateDestroyAPIView):
 class StreamPlatformAV(viewsets.ModelViewSet):
     
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrReadOnly]
     
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
