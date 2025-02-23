@@ -10,6 +10,25 @@ from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from watchlist_app.throttling import ReviewCreateThrottle, ReviewListThrottle
 
 
+class UserReview(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    
+    # def get_queryset(self):
+    #     username = self.kwargs['username']
+    #     return Review.objects.filter(review_user__username=username)
+
+    def get_queryset(self):
+        username = self.request.query_params.get('username', None)
+        if username is not None:
+            if Review.objects.filter(review_user__username=username).exists():
+                return Review.objects.filter(review_user__username=username)
+            else:
+                raise ValidationError({"error": "No review found for this user."})
+
+               
+        
 class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
     authentication_classes = [TokenAuthentication]
