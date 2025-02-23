@@ -6,13 +6,15 @@ from watchlist_app.models import WatchList, StreamPlatform, Review
 from watchlist_app.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 from watchlist_app.permissions import IsAdminOrReadOnly, ReviewUserOrReadOnly
 from rest_framework.authentication import TokenAuthentication
-
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
+from watchlist_app.throttling import ReviewCreateThrottle, ReviewListThrottle
 
 
 class ReviewCreate(generics.CreateAPIView):
     serializer_class = ReviewSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    throttle_classes = [ReviewCreateThrottle]
 
     def get_queryset(self):
         return Review.objects.all()
@@ -43,6 +45,7 @@ class ReviewList(generics.ListAPIView):
     
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
+    throttle_classes = [ReviewListThrottle]
     
     def get_queryset(self):
         return Review.objects.filter(watchlist=self.kwargs['pk'])
@@ -80,7 +83,8 @@ class WatchListDetailAV(generics.RetrieveUpdateDestroyAPIView):
 class StreamPlatformAV(viewsets.ModelViewSet):
     
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly, IsAuthenticated]
+    throttle_classes = [UserRateThrottle, AnonRateThrottle]
     
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
