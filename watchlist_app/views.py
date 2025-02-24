@@ -10,7 +10,7 @@ from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from watchlist_app.throttling import ReviewCreateThrottle, ReviewListThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
-from watchlist_app.pagination import WatchListLOPagination
+from watchlist_app.pagination import WatchListCuPagination
  
 
 
@@ -112,7 +112,7 @@ class WatchListAV(generics.ListCreateAPIView):
     
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
-    pagination_class = WatchListLOPagination
+    pagination_class = WatchListCuPagination
     
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
