@@ -46,6 +46,8 @@ class UserReviewAboveRating(generics.ListAPIView):
                 return Review.objects.filter(rating__gte=rating)
             else:
                 raise ValidationError({"error": "No review found for this rating."})
+        else:
+                raise ValidationError({'error': 'Wrong parameter passed.'})
         
 
 
