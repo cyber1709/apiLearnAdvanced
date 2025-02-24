@@ -143,6 +143,9 @@ REST_FRAMEWORK = {
         'user': '3/day',
         'review-create': '1/day',
         'review-list': '3/day'
-    }
+    },  # <-- Added missing comma
+
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',  # Fixed typo
+    # 'PAGE_SIZE': 100,
 }
 

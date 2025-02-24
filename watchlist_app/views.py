@@ -9,6 +9,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from watchlist_app.throttling import ReviewCreateThrottle, ReviewListThrottle
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from watchlist_app.pagination import WatchListPagination
  
 
 
@@ -86,7 +88,10 @@ class ReviewList(generics.ListAPIView):
     
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    throttle_classes = [ReviewListThrottle]
+    # throttle_classes = [ReviewListThrottle]
+    
+    filter_backends = [DjangoFilterBackend] 
+    filterset_fields = ['review_user__username', 'active']
     
     def get_queryset(self):
         return Review.objects.filter(watchlist=self.kwargs['pk'])
@@ -107,6 +112,7 @@ class WatchListAV(generics.ListCreateAPIView):
     
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
+    pagination_class = WatchListPagination
     
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
@@ -125,7 +131,27 @@ class StreamPlatformAV(viewsets.ModelViewSet):
     
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAdminOrReadOnly, IsAuthenticated]
-    throttle_classes = [UserRateThrottle, AnonRateThrottle]
+    # throttle_classes = [UserRateThrottle, AnonRateThrottle]
+    
+    """
+    code for filtering
+    """
+    
+    # filter_backends = [DjangoFilterBackend] 
+    # filterset_fields = ['name','about']
+    
+    """ Code for searching
+    ^ - Starts-with-search
+    = - Exact matching
+    @ - full text search
+    $ - Regex seach
+    
+    search_fields = ['=username', '=email']
+    
+    """
+    
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['name', 'about', 'website']
     
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
