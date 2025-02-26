@@ -32,4 +32,5 @@ def registration_view(request):
             
             
             
-        return Response(data)
+        return Response(data, status=status.HTTP_201_CREATED)
+
